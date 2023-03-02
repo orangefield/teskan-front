@@ -8,7 +8,7 @@
                 <div class="menu_left">
                     <div>사용자</div>
                     <div>사용자input</div>
-                    <button>검색</button>
+                    <button @click="isModalOpened = true">검색</button>
                 </div>
                 <div class="menu_right">
                     <button>추가</button>
@@ -18,6 +18,41 @@
                 </div>
             </div>
             <!-- 검색 및 CRUD 버튼 끝 -->
+            <!-- 사원 검색 모달창 시작-->
+            <div class="black_bg" v-if="isModalOpened == true">
+                <div class="white_bg">
+                    <div>사원 검색</div>
+                    <div class="emp_modal_menu">
+                        <div>검색콤보</div>
+                        <div>
+                            <button>검색</button>
+                            <button>초기화</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>사번</th>
+                                <th>이름</th>
+                                <th>직급</th>
+                                <th>부서</th>
+                                <th>전화번호</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>아</td>
+                                <td>무</td>
+                                <td>거</td>
+                                <td>나</td>
+                                <td>뿅</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button @click="isModalOpened = false">닫기</button>
+                </div>
+            </div>
+            <!-- 사원 검색 모달창 끝-->
             <!-- 데이터 입력 테이블 시작 -->
             <table>
                 <tr>
@@ -94,6 +129,11 @@
 <script>
 export default {
 
+    data() {
+        return {
+            isModalOpened: false,
+        }
+    }
 }
 </script>
 <!-- 스크립트 끝 -->
@@ -106,6 +146,34 @@ export default {
 table {
     width: 1160px;
     height: 500px;
+}
+
+.emp_container {
+    margin: 0
+}
+
+div {
+    box-sizing: border-box;
+}
+
+.black_bg {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    padding: 20px;
+}
+
+.white_bg {
+    widows: 100%;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.emp_modal_menu {
+    display: flex;
+    justify-content: space-between;
 }
 
 .emp_body {
