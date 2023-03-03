@@ -28,12 +28,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="col_data">아</td>
-                            <td class="col_data">무</td>
-                            <td class="col_data">거</td>
-                            <td class="col_data">나</td>
-                            <td class="col_data">뿅</td>
+                        <tr v-for="(row, emp_no) in list" :key="emp_no">
+                            <td class="col_data">{{ row.emp_no }}</td>
+                            <td class="col_data">{{ row.name }}</td>
+                            <td class="col_data">{{ row.position_code }}</td>
+                            <td class="col_data">{{ row.dept_code }}</td>
+                            <td class="col_data">{{ row.tel }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -55,7 +55,7 @@
                         <p>사용자</p>
                     </div>
                     <div class="mr_10"><input type="text"></div>
-                    <button class="emp_btn" @click="isModalOpened = true">검색</button>
+                    <button class="emp_btn" @click="fnGetList(), isModalOpened = true">검색</button>
                 </div>
                 <div class="menu_right">
                     <button class="emp_btn mr_5">추가</button>
@@ -192,6 +192,27 @@ export default {
     data() {
         return {
             isModalOpened: false,
+            requestBody: {},
+            list: {},
+        }
+    },
+    mounted(){
+        
+    },
+    methods: {
+        // 사원 목록 가져오기
+        fnGetList(){
+            this.requestBody = {}
+            this.$axios.get("/emp/list", {
+                params: this.requestBody,
+                headers: {}
+            }).then((res)=>{
+                this.list = res.data
+            }).catch((err)=>{
+                if(err.message > -1){
+                    alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해 주세요.')
+                }
+            })
         }
     }
 }
