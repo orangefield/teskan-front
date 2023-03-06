@@ -37,6 +37,13 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <!-- 가짜 페이징 시작 -->
+                <div class="mt_15">
+                    <a class="modal_paging" href="javascript:;" v-for="i in 18" :key="i" @click="fnPage(i - 1)">{{ i }}</a>
+                </div>
+                <!-- 가짜 페이징 끝 -->
+
                 <div class="modal_menu mv_20">
                     <button class="emp_btn">선택</button>
                     <button class="emp_btn" @click="isModalOpened = false">닫기</button>
@@ -192,27 +199,40 @@ export default {
     data() {
         return {
             isModalOpened: false,
-            requestBody: {},
             list: {},
+            page: 0,   // 화면에 출력되는 페이지
+            size: 12,   // 이미 back에서 사이즈 설정 완료
         }
     },
-    mounted(){
-        
+    mounted() {
+
     },
     methods: {
         // 사원 목록 가져오기
-        fnGetList(){
-            this.requestBody = {}
-            this.$axios.get("/emp/list", {
-                params: this.requestBody,
-                headers: {}
-            }).then((res)=>{
-                this.list = res.data
-            }).catch((err)=>{
-                if(err.message > -1){
-                    alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해 주세요.')
-                }
-            })
+        fnGetList() {
+            this.requestBody = {
+                page: this.page,
+                size: this.size
+            },
+                console.log("requestBody.page : " + this.requestBody.page),
+                this.$axios.get("/emp/list", {
+                    params: this.requestBody,
+                    headers: {}
+                }).then((res) => {
+                    this.list = res.data
+                    console.log("this.list.prev : " + this.list[0].prev)
+                    console.log("this.list.next : " + this.list[0].next)
+                }).catch((err) => {
+                    if (err.message > -1) {
+                        alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해 주세요.')
+                    }
+                })
+        },
+        fnPage(n) {
+            if (this.page !== n) {
+                this.page = n
+                this.fnGetList()
+            }
         }
     }
 }
@@ -257,6 +277,10 @@ export default {
 
 .mt_5 {
     margin: 5px 0px 0px 0px;
+}
+
+.mt_15 {
+    margin: 15px 0px 0px 0px;
 }
 
 table {
@@ -327,7 +351,7 @@ div {
 
 .white_bg {
     width: 700px;
-    height: 500px;
+    height: 600px;
     background-color: white;
     border-radius: 5px;
     padding: 20px;
@@ -428,6 +452,13 @@ div {
 .modal_menu {
     display: flex;
     justify-content: space-evenly;
+}
+
+.modal_paging {
+    text-decoration: none;
+    color: #0078b3;
+    font-weight: 600;
+    margin: 0px 5px 0px 5px;
 }
 </style>
 <!-- CSS 끝 -->
